@@ -13,6 +13,9 @@ devices = {{ swift_vars.mount_point | default(swift.mount_point) }}
 log_facility = LOG_LOCAL3
 {% include "statsd.j2" %}
 
+disable_fallocate = {{ swift_container_disable_fallocate }}
+fallocate_reserve = {{ swift_container_fallocate_reserve }}
+
 [pipeline:main]
 pipeline = healthcheck recon container-server
 
