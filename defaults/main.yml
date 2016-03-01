@@ -225,6 +225,18 @@ swift_object_max_rsync_connections: "{{ swift_max_rsync_connections }}"
 swift_do_setup: True
 swift_do_sync: True
 
+# Example swift_container_sync_realms to specify container_sync realms
+# This can exist for multiple realms (in a list)
+# swift_container_sync_realms:
+#   - name: realm1
+#     # You may want to put swift_realm_keyx in user_secrets.yml or ansible-vault
+#     # Otherwise specify it manually below.
+#     key1: {{ swift_realm_key1 }}
+#     # key2 is optional and used for rotating/deprecated keys
+#     key2: {{ swift_realm_key2 }}
+#     clustername1: https://<cluster1-ip>/v1
+#     clustername2: https://<cluster2-ip>/v1
+
 # swift packages that must be installed before anything else
 swift_requires_pip_packages:
   - virtualenv
@@ -292,6 +304,7 @@ swift_account_server_replicator_conf_overrides: {}
 swift_container_server_conf_overrides: {}
 swift_container_reconciler_conf_overrides: {}
 swift_container_server_replicator_conf_overrides: {}
+swift_container_sync_realms_conf_overrides: {}
 swift_drive_audit_conf_overrides: {}
 swift_object_server_conf_overrides: {}
 swift_object_expirer_conf_overrides: {}
