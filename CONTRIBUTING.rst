@@ -1,6 +1,6 @@
-OpenStack swift
-###############
-:tags: openstack, swift, cloud, ansible
+os_swift
+########
+:tags: openstack, cloud, ansible
 :category: \*nix
 
 contributor guidelines

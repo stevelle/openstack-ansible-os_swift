@@ -1,20 +1,14 @@
-OpenStack swift
-###############
-:tags: openstack, swift, cloud, ansible
+os_swift role
+#############
+:tags: openstack, cloud, ansible, os_swift
 :category: \*nix
 
-Role to install swift and swift registry.
-
-This role will install the following:
-    * swift
+os_swift Role
 
 .. code-block:: yaml
 
-    - name: Install swift server
-      hosts: swift_all
+    - name: os_swift role
+      hosts: "hosts"
       user: root
       roles:
-        - { role: "os_swift", tags: [ "os-swift" ] }
-      vars:
-        external_lb_vip_address: 172.16.24.1
-        internal_lb_vip_address: 192.168.0.1
+        - { role: "os_swift" }
