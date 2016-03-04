@@ -79,7 +79,7 @@ user_test_tester3 = testing3
 [filter:authtoken]
 paste.filter_factory = keystonemiddleware.auth_token:filter_factory
 auth_plugin = {{ swift_keystone_auth_plugin }}
-auth_url = {{ keystone_service_adminuri }}
+auth_url = {{ keystone_service_adminurl }}
 auth_uri = {{ keystone_service_internaluri }}
 insecure = {{ keystone_service_adminuri_insecure | bool }}
 project_domain_id = {{ swift_service_project_domain_id }}
