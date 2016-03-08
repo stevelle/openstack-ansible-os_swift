@@ -21,6 +21,12 @@ debug: False
 verbose: True
 cache_timeout: 600
 
+swift_git_repo: https://git.openstack.org/openstack/swift
+swift_git_install_branch: master
+swift_developer_mode: false
+swift_developer_constraints:
+  - "git+{{ swift_git_repo }}@{{ swift_git_install_branch }}#egg=swift"
+
 # Name of the virtual env to deploy into
 swift_venv_tag: untagged
 swift_venv_bin: "/openstack/venvs/swift-{{ swift_venv_tag }}/bin"
