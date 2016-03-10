@@ -131,3 +131,25 @@
   when: >
     swift.replication_network is not defined or
     swift.replication_network == swift.storage_network
+
+- name: Deploy drive-audit configuration file
+  config_template:
+    src: drive-audit.conf.j2
+    dest: /etc/swift/drive-audit.conf
+    owner: "{{ swift_system_user_name }}"
+    group: "{{ swift_system_group_name }}"
+    mode: "0644"
+    config_overrides: "{{ swift_drive_audit_conf_overrides }}"
+    config_type: "ini"
+  tags:
+    - swift-drive-audit
+
+- name: Create drive-audit cron job
+  cron:
+    name: "Run drive-audit script"
+    job: "{{ swift_venv_bin }}/swift-drive-audit /etc/swift/drive-audit.conf"
+    minute: 15
+    cron_file: swift-drive-audit
+    user: root
+  tags:
+    - swift-drive-audit

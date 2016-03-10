@@ -265,6 +265,7 @@ swift_account_server_replicator_conf_overrides: {}
 swift_container_server_conf_overrides: {}
 swift_container_reconciler_conf_overrides: {}
 swift_container_server_replicator_conf_overrides: {}
+swift_drive_audit_conf_overrides: {}
 swift_object_server_conf_overrides: {}
 swift_object_expirer_conf_overrides: {}
 swift_object_server_replicator_conf_overrides: {}
