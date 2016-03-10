@@ -84,8 +84,8 @@
     path: "/var/cache/{{ swift_venv_download_url | basename }}"
     get_md5: False
   when:
-    - swift_venv_enabled | bool
     - not swift_developer_mode | bool
+    - swift_venv_enabled | bool
   register: local_venv_stat
   tags:
     - swift-install
@@ -96,8 +96,8 @@
     url: "{{ swift_venv_download_url | replace('tgz', 'checksum') }}"
     return_content: True
   when:
-    - swift_venv_enabled | bool
     - not swift_developer_mode | bool
+    - swift_venv_enabled | bool
   register: remote_venv_checksum
   tags:
     - swift-install
@@ -161,9 +161,9 @@
     dest: "{{ swift_venv_bin | dirname }}"
     copy: "no"
   when:
+    - not swift_developer_mode | bool
     - swift_venv_enabled | bool
     - swift_get_venv | changed
-    - not swift_developer_mode | bool
   notify:
     - Restart swift account services
     - Restart swift container services
@@ -177,9 +177,9 @@
   command: >
     virtualenv-tools --update-path=auto {{ swift_venv_bin | dirname }}
   when:
+    - not swift_developer_mode | bool
     - swift_venv_enabled | bool
     - swift_get_venv | success
-    - not swift_developer_mode | bool
   tags:
     - swift-install
     - swift-pip-packages
@@ -198,8 +198,7 @@
   with_items: swift_pip_packages
   when:
     - swift_venv_enabled | bool
-    - swift_get_venv | failed
-    - not swift_developer_mode | bool
+    - swift_get_venv | failed or swift_developer_mode | bool
   notify:
     - Restart swift account services
     - Restart swift container services
@@ -220,8 +219,8 @@
   delay: 2
   with_items: swift_pip_packages
   when:
-    - not swift_venv_enabled | bool
     - not swift_developer_mode | bool
+    - not swift_venv_enabled | bool
   notify:
     - Restart swift account services
     - Restart swift container services

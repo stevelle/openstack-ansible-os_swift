@@ -1,2 +1,4 @@
 [all]
 localhost ansible_connection=local ansible_become=True
+
+[swift_remote_all]
