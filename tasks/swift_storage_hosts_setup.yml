@@ -24,6 +24,7 @@
     state: present
     value: "1"
     sysctl_set: yes
+  delegate_to: "{{ physical_host }}"
 
 # We need swift_vars to exist for the "swift_vars.drives is defined check" to work
 - name: "Set swift_vars if undefined"

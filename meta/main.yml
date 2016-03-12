@@ -35,3 +35,6 @@ dependencies:
   - role: pip_lock_down
     when:
       - not swift_developer_mode | bool
+  - role: pip_install
+    when:
+      - swift_developer_mode | bool
