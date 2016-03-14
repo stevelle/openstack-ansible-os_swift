@@ -88,6 +88,13 @@ swift_object_port: "6000"
 swift_container_port: "6001"
 swift_account_port: "6002"
 
+# Default swift ring settings:
+swift_default_replication_number: 3
+swift_default_min_part_hours: 1
+swift_default_host_zone: 0
+swift_default_host_region: 1
+swift_default_drive_weight: 100
+
 ## Swift service defaults
 swift_service_name: swift
 swift_service_user_name: swift
@@ -204,6 +211,19 @@ swift_max_rsync_connections: 2
 swift_account_max_rsync_connections: "{{ swift_max_rsync_connections }}"
 swift_container_max_rsync_connections: "{{ swift_max_rsync_connections }}"
 swift_object_max_rsync_connections: "{{ swift_max_rsync_connections }}"
+
+# Set the managed regions as a list of swift regions to manage
+# Use for global clusters, default when not set is all regions.
+# swift_managed_regions:
+#  - 1
+#  - 2
+
+# swift_do_setup and swift_do_sync control which parts of the swift
+# role get run. You should never need to adjust these, they are set
+# within the swift-setup and swift-sync roles to ensure only the
+# appropriate tasks within the os-swift role are run.
+swift_do_setup: True
+swift_do_sync: True
 
 # swift packages that must be installed before anything else
 swift_requires_pip_packages:

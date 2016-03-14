@@ -14,25 +14,74 @@
 # limitations under the License.
 
 - include: swift_pre_install.yml
+  when:
+    - swift_do_setup | bool
+  tags:
+    - swift-setup
 - include: swift_install.yml
+  when:
+    - swift_do_setup | bool
+  tags:
+    - swift-setup
 - include: swift_post_install.yml
+  when:
+    - swift_do_setup | bool
+  tags:
+    - swift-setup
 
 - include: swift_storage_hosts.yml
-  when: >
-    inventory_hostname in groups['swift_hosts']
+  when:
+    - inventory_hostname in groups['swift_hosts']
+    - swift_do_setup | bool
   tags:
     - swift-storage-hosts
+    - swift-setup
 
 - include: swift_proxy_hosts.yml
-  when: >
-    inventory_hostname in groups['swift_proxy']
+  when:
+    - inventory_hostname in groups['swift_proxy']
+    - swift_do_setup | bool
   tags:
     - swift-storage-hosts
+    - swift-setup
 
 - include: swift_service_setup.yml
   when:
     - inventory_hostname == groups['swift_all'][0]
     - '"keystoneauth" in swift_middleware_list'
+    - swift_do_setup | bool
+  tags:
+    - swift-setup
 
 - name: Flush handlers
   meta: flush_handlers
+  tags:
+    - swift-setup
+
+- include: swift_command_check.yml
+  when:
+    - swift_do_sync | bool
+  tags:
+    - swift-sync
+
+- include: swift_key_setup.yml
+  when:
+    - swift_do_sync | bool
+  tags:
+    - swift-key
+    - swift-key-distribute
+    - swift-sync
+
+- include: swift_rings.yml
+  when:
+    - swift_do_sync | bool
+  tags:
+    - swift-rings
+    - swift-sync
+
+- include: swift_sync_post_install.yml
+  when:
+    - swift_do_sync | bool
+  tags:
+    - swift-sync-post-install
+    - swift-sync

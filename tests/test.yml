@@ -296,7 +296,6 @@
   gather_facts: true
   roles:
     - role: "{{ rolename | basename }}"
-    - role: "os_swift_sync"
   vars:
     swift:
       storage_network: eth0
