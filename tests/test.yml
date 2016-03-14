@@ -258,10 +258,10 @@
       - 'swift1'
       - 'swift2'
     delegate_to: "{{ physical_host }}"
-  - name: Create the Swift mount points, fstab entries and mount the file systems
+  - name: Create the Swift fstab entries and mount the file systems
     mount:
       name: "/srv/{{ container_name }}_{{ item }}"
-      src: "/opt/{{container_name}}_{{ item }}.img"
+      src: "/opt/{{ container_name }}_{{ item }}.img"
       fstype: xfs
       opts: 'loop,noatime,nodiratime,nobarrier,logbufs=8'
       passno: 0
@@ -270,6 +270,10 @@
     with_items:
       - 'swift1'
       - 'swift2'
+    register: mount_status
+    until: mount_status | success
+    retries: 5
+    delay: 2
     delegate_to: "{{ physical_host }}"
   - name: Swift extra lxc config
     lxc_container:
