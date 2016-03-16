@@ -199,6 +199,12 @@ swift: {}
 #         index: 0
 #         default: True
 
+# Set rsync max_connections vars
+swift_max_rsync_connections: 2
+swift_account_max_rsync_connections: "{{ swift_max_rsync_connections }}"
+swift_container_max_rsync_connections: "{{ swift_max_rsync_connections }}"
+swift_object_max_rsync_connections: "{{ swift_max_rsync_connections }}"
+
 # swift packages that must be installed before anything else
 swift_requires_pip_packages:
   - virtualenv

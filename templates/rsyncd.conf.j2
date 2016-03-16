@@ -7,19 +7,19 @@ pid file = /var/run/rsyncd.pid
 address = {{ swift_replication_address }}
 
 [account]
-max connections = 2
+max connections = {{ swift_account_max_rsync_connections }}
 path = {{ swift_vars.mount_point | default(swift.mount_point) }}
 read only = false
 lock file = /var/lock/account.lock
 
 [container]
-max connections = 2
+max connections = {{ swift_container_max_rsync_connections }}
 path = {{ swift_vars.mount_point | default(swift.mount_point) }}
 read only = false
 lock file = /var/lock/container.lock
 
 [object]
-max connections = 2
+max connections = {{ swift_object_max_rsync_connections }}
 path = {{ swift_vars.mount_point | default(swift.mount_point) }}
 read only = false
 lock file = /var/lock/object.lock
