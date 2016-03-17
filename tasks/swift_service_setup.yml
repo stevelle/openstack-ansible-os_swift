@@ -32,7 +32,6 @@
   tags:
     - swift-api-setup
     - swift-service-add
-    - swift-setup
 
 # Create an admin user
 - name: Ensure swift user
@@ -54,7 +53,6 @@
   tags:
     - swift-api-setup
     - swift-service-add
-    - swift-setup
 
 # Add a role to the user
 - name: Ensure swift user to admin role
@@ -76,7 +74,6 @@
   tags:
     - swift-api-setup
     - swift-service-add
-    - swift-setup
 
 - name: Ensure swiftoperator role
   keystone:
@@ -94,7 +91,6 @@
   tags:
     - swift-api-setup
     - swift-service-add
-    - swift-setup
 
 - name: "Create keystone user for swift-dispersion"
   keystone:
@@ -115,7 +111,6 @@
   tags:
     - swift-api-setup
     - swift-service-add
-    - swift-setup
 
 - name: "Create keystone role for ResellerAdmin"
   keystone:
@@ -173,7 +168,6 @@
   tags:
     - swift-api-setup
     - swift-service-add
-    - swift-setup
 
 # Create an endpoint
 - name: Ensure swift endpoint
@@ -201,4 +195,3 @@
   tags:
     - swift-api-setup
     - swift-service-add
-    - swift-setup
