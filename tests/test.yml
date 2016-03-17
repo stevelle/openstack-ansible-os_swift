@@ -321,7 +321,8 @@
     swift_hash_path_suffix: "secrete_suffix"
     swift_service_password: "secrete"
     swift_developer_mode: true
-    keystone_auth_admin_token: "SuperSecreteTestToken"
+    keystone_admin_user_name: admin
+    keystone_admin_tenant_name: admin
     keystone_auth_admin_password: "SuperSecretePassword"
     keystone_service_adminuri_insecure: false
     keystone_service_internaluri_insecure: false
