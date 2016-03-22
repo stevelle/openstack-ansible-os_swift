@@ -16,16 +16,19 @@
 - include: swift_pre_install.yml
   when:
     - swift_do_setup | bool
+    - inventory_hostname in groups['swift_all']
   tags:
     - swift-setup
 - include: swift_install.yml
   when:
     - swift_do_setup | bool
+    - inventory_hostname in groups['swift_all']
   tags:
     - swift-setup
 - include: swift_post_install.yml
   when:
     - swift_do_setup | bool
+    - inventory_hostname in groups['swift_all']
   tags:
     - swift-setup
 
