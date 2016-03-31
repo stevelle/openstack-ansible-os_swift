@@ -67,7 +67,7 @@ swift_middleware_list:
   - gatekeeper
   - healthcheck
   - proxy-logging
-#  - ceilometer
+  - "{% if swift_ceilometer_enabled | bool %}ceilometer{% endif %}"
   - cache
   - container_sync
   - bulk
