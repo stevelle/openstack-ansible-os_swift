@@ -88,6 +88,15 @@ project_name = {{ swift_service_project_name }}
 username = {{ swift_service_user_name }}
 password = {{ swift_service_password }}
 delay_auth_decision = {{ swift_delay_auth_decision }}
+{% if memcached_servers is defined %}
+memcached_servers = {{ memcached_servers }}
+
+token_cache_time = 300
+revocation_cache_time = 60
+
+memcache_security_strategy = ENCRYPT
+memcache_secret_key = {{ memcached_encryption_key }}
+{% endif %}
 {% endif %}
 
 {% if 'keystoneauth' in swift_middleware_list %}
