@@ -172,6 +172,7 @@
         - { option: "gcache.size", value: "32M" }
       galera_server_id: "{{ inventory_hostname | string_2_int }}"
     - role: "memcached_server"
+      memcached_listen: 10.100.100.2
 
 - name: Setup keystone
   hosts: service_all
@@ -308,7 +309,7 @@
     - role: "{{ rolename | basename }}"
   vars:
     swift:
-      storage_network: eth0
+      storage_network: eth1
       part_power: 8
       drives:
         - name: swift1
@@ -342,6 +343,7 @@
     swift_git_install_branch: master
     openrc_os_password: "{{ keystone_auth_admin_password }}"
     openrc_os_domain_name: "Default"
+    openrc_os_auth_url: "http://10.100.100.2:5000/v3"
     memcached_encryption_key: "secrete"
     debug: true
     verbose: true

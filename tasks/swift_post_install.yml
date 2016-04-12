@@ -57,6 +57,7 @@
     - Restart swift container services
     - Restart swift object services
     - Restart swift proxy services
+    - Restart rsyslog
   tags:
     - swift-config
     - swift-post-install
