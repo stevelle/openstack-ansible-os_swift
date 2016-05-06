@@ -217,10 +217,13 @@ swift: {}
 #         default: True
 
 # Set rsync max_connections vars
-swift_max_rsync_connections: 2
+swift_max_rsync_connections: 4
 swift_account_max_rsync_connections: "{{ swift_max_rsync_connections }}"
 swift_container_max_rsync_connections: "{{ swift_max_rsync_connections }}"
 swift_object_max_rsync_connections: "{{ swift_max_rsync_connections }}"
+
+# Set Swift to use rsync module per object server drive
+swift_rsync_module_per_drive: False
 
 # Set the managed regions as a list of swift regions to manage
 # Use for global clusters, default when not set is all regions.

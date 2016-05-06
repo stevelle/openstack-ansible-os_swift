@@ -69,6 +69,7 @@
     - { path: "/openstack/log/{{ inventory_hostname }}", owner: "{{ swift_syslog_user_name }}", group: "{{ swift_syslog_group_name }}" }
     - { path: "/var/cache/swift" }
     - { path: "{{ swift_system_home_folder }}" }
+    - { path: "/etc/rsync.d", owner: "root", group: "root" }
   tags:
     - swift-dirs
 
