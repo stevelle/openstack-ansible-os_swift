@@ -1,5 +1,5 @@
 ---
-# Copyright 2015, Rackspace US, Inc.
+# Copyright 2016, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,26 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Prepare the user ssh keys
-- include: test-prepare-keys.yml
-
-# Prepare the host
-- include: test-prepare-host.yml
-
-# Prepare the containers
-- include: test-prepare-containers.yml
-
-# Install MariaDB/Memcached
-- include: test-install-infra.yml
-
-# Install Keystone
-- include: test-install-keystone.yml
-
-# Setup Swift hosts
-- include: test-setup-swifthosts.yml
-
-# Install Swift
-- include: test-install-swift.yml
-
-# Test Swift
-- include: test-swift-functional.yml
+ansible_ssh_host: 10.100.100.101
+container_networks:
+  management_address:
+    address: "{{ ansible_ssh_host }}"
+    bridge: "lxcbr0"
+    interface: "eth1"
+    netmask: "255.255.255.0"
+    type: "veth"

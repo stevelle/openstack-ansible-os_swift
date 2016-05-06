@@ -8,7 +8,7 @@
 # For keystone v2 change auth_version to 2 and auth_prefix to /v2.0/
 # And "allow_account_management" should not be set "true"
 auth_version = 3
-auth_host = 10.100.100.2
+auth_host = {{ internal_lb_vip_address }}
 auth_port = 5000
 auth_ssl = no
 auth_prefix = /v3/
