@@ -13,6 +13,9 @@ devices = {{ swift_vars.mount_point | default(swift.mount_point) }}
 log_facility = LOG_LOCAL2
 {% include "statsd.j2" %}
 
+disable_fallocate = {{ swift_account_disable_fallocate }}
+fallocate_reserve = {{ swift_account_fallocate_reserve }}
+
 [pipeline:main]
 pipeline = healthcheck recon account-server
 
