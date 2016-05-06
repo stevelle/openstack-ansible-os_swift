@@ -39,6 +39,9 @@ recon_lock_path = /var/lock
 log_facility = LOG_LOCAL4
 concurrency = 6
 reclaim_age = {{ reclaim_age | default(604800) }}
+{%   if swift_rsync_module_per_drive %}
+rsync_module = {replication_ip}::object_{device}
+{%   endif %}
 {% endif %}
 
 [object-updater]
