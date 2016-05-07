@@ -18,7 +18,7 @@ galaxy_info:
   description: Installation and setup of swift
   company: Rackspace
   license: Apache2
-  min_ansible_version: 1.6.6
+  min_ansible_version: 1.9
   platforms:
     - name: Ubuntu
       versions:
@@ -30,12 +30,7 @@ galaxy_info:
     - development
     - openstack
 dependencies:
-  - role: pip_lock_down
-    when:
-      - not swift_developer_mode | bool
-  - role: pip_install
-    when:
-      - swift_developer_mode | bool
+  - pip_install
   - role: apt_package_pinning
     when:
       - ansible_pkg_mgr == 'apt'
