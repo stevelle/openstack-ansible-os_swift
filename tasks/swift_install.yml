@@ -206,6 +206,16 @@
     - swift-install
     - swift-pip-packages
 
+- include: swift_pypy_setup.yml
+  when:
+    - swift_venv_enabled | bool
+    - swift_get_venv | success
+    - swift_pypy_enabled | bool
+  tags:
+    - swift-install
+    - swift-pip-packages
+    - swift-pypy
+
 - name: Install pip packages (venv)
   pip:
     name: "{{ item }}"
