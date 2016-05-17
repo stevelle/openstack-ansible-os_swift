@@ -17,7 +17,6 @@
 external_lb_vip_address: 10.100.100.101
 internal_lb_vip_address: 10.100.100.101
 debug: true
-verbose: true
 
 # LXC Settings
 lxc_net_address: 10.100.100.1

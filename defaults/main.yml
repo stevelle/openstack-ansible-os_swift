@@ -18,7 +18,6 @@ swift_ceilometer_enabled: False
 
 ## Verbosity Options
 debug: False
-verbose: True
 cache_timeout: 600
 
 swift_git_repo: https://git.openstack.org/openstack/swift
