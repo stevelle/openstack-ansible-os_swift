@@ -22,9 +22,9 @@ verbose: True
 cache_timeout: 600
 
 swift_git_repo: https://git.openstack.org/openstack/swift
-swift_git_install_branch: master
+swift_git_install_branch: stable/mitaka
 swift_requirements_git_repo: https://git.openstack.org/openstack/requirements
-swift_requirements_git_install_branch: master
+swift_requirements_git_install_branch: stable/mitaka
 swift_developer_mode: false
 swift_developer_constraints:
   - "git+{{ swift_git_repo }}@{{ swift_git_install_branch }}#egg=swift"
