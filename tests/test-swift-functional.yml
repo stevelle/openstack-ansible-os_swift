@@ -97,7 +97,7 @@
       dest: "/opt/swift"
       update: yes
       clone: yes
-      version: master
+      version: "{{ swift_git_install_branch }}"
   - name: Install requirements for swift
     pip:
       requirements: "{{ item }}"
