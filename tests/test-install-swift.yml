@@ -13,26 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Prepare the user ssh keys
-- include: test-prepare-keys.yml
-
-# Prepare the host
-- include: test-prepare-host.yml
-
-# Prepare the containers
-- include: test-prepare-containers.yml
-
-# Install MariaDB/Memcached
-- include: test-install-infra.yml
-
-# Install Keystone
-- include: test-install-keystone.yml
-
-# Setup Swift hosts
-- include: test-setup-swifthosts.yml
-
-# Install Swift
-- include: test-install-swift.yml
-
-# Test Swift
-- include: test-swift-functional.yml
+- name: Playbook for deploying swift
+  hosts: swift_all
+  user: root
+  gather_facts: true
+  pre_tasks:
+    - name: Set swift replication address (container)
+      set_fact:
+        replication_address: "{{ hostvars[inventory_hostname]['container_networks']['replication_address']['address'] }}"
+      when:
+        - inventory_hostname in groups['swift_all']
+        - hostvars[inventory_hostname]['container_networks']['replication_address']['address'] is defined
+  roles:
+    - role: "{{ rolename | basename }}"
+  vars_files:
+    - test-vars.yml
