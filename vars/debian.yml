@@ -13,30 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-galaxy_info:
-  author: rcbops
-  description: Installation and setup of swift
-  company: Rackspace
-  license: Apache2
-  min_ansible_version: 1.6.6
-  platforms:
-    - name: Ubuntu
-      versions:
-        - trusty
-  categories:
-    - cloud
-    - python
-    - swift
-    - development
-    - openstack
-dependencies:
-  - role: pip_lock_down
-    when:
-      - not swift_developer_mode | bool
-  - role: pip_install
-    when:
-      - swift_developer_mode | bool
-  - role: apt_package_pinning
-    when:
-      - ansible_pkg_mgr == 'apt'
-  - openstack_openrc
+cache_timeout: 600
+
+swift_apt_packages:
+  - curl
+  - gcc
+  - git-core
+  - liberasurecode1
+  - liberasurecode-dev
+  - libffi-dev
+  - openssh-server
+  - python-dev
+  - rsync

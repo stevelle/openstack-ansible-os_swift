@@ -18,7 +18,6 @@ swift_ceilometer_enabled: False
 
 ## Verbosity Options
 debug: False
-cache_timeout: 600
 
 swift_git_repo: https://git.openstack.org/openstack/swift
 swift_git_install_branch: master
@@ -268,17 +267,6 @@ swift_pip_packages:
   - python-memcached
   - python-swiftclient
   - swift
-
-swift_apt_packages:
-  - curl
-  - gcc
-  - git-core
-  - liberasurecode1
-  - liberasurecode-dev
-  - libffi-dev
-  - openssh-server
-  - python-dev
-  - rsync
 
 swift_account_program_names:
   - swift-account-server
