@@ -73,6 +73,7 @@ swift_middleware_list:
   - ratelimit
   - authtoken
   - keystoneauth
+  - staticweb
   - container-quotas
   - account-quotas
   - slo
