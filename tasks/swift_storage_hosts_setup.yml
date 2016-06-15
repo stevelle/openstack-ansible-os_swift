@@ -26,12 +26,6 @@
     sysctl_set: yes
   delegate_to: "{{ physical_host }}"
 
-# We need swift_vars to exist for the "swift_vars.drives is defined check" to work
-- name: "Set swift_vars if undefined"
-  set_fact:
-    swift_vars: "{}"
-  when: swift_vars is not defined
-
 - name: "Put /etc/rsyncd.conf in place"
   template:
     src: "rsyncd.conf.j2"
@@ -62,14 +56,4 @@
     owner: "{{ swift_system_user_name }}"
     group: "{{ swift_system_group_name }}"
     state: "directory"
-  with_items: swift_vars.drives
-  when: swift_vars.drives is defined
-
-- name: "Set ownership on default mounted drives"
-  file:
-    dest: "{{ swift_vars.mount_point | default(swift.mount_point) }}/{{ item.name }}"
-    owner: "{{ swift_system_user_name }}"
-    group: "{{ swift_system_group_name }}"
-    state: "directory"
-  with_items: swift.drives
-  when: swift_vars.drives is not defined
+  with_items: "{{ swift_vars.drives| default(swift.drives) | default([]) }}"

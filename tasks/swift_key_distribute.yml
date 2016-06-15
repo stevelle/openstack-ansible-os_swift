@@ -17,8 +17,10 @@
   authorized_key:
     user: "{{ swift_system_user_name }}"
     key: "{{ hostvars[item]['swift_pubkey'] | b64decode }}"
-  with_items: groups['swift_all'] + groups['swift_remote_all']
-  when: hostvars[item]['swift_pubkey'] is defined
+  with_items: "{{ groups['swift_all'] + groups['swift_remote_all'] }}"
+  when:
+    - hostvars[item] is defined
+    - hostvars[item]['swift_pubkey'] is defined
   tags:
     - swift-key
     - swift-key-create

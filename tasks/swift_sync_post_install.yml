@@ -29,5 +29,5 @@
     name: "{{ item }}"
     state: "started"
     pattern: "{{ item }}"
-  with_items: swift_proxy_program_names
+  with_items: "{{ swift_proxy_program_names }}"
   when: inventory_hostname in groups['swift_proxy']

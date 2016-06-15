@@ -46,12 +46,10 @@
 
 - name: Copy swift config
   template:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
+    src: "swift-rsyslog.conf.j2"
+    dest: "/etc/rsyslog.d/49-swift.conf"
     owner: "{{ swift_system_user_name }}"
     group: "{{ swift_system_group_name }}"
-  with_items:
-    - { src: "swift-rsyslog.conf.j2", dest: "/etc/rsyslog.d/49-swift.conf" }
   notify:
     - Restart swift account services
     - Restart swift container services

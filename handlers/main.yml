@@ -19,7 +19,7 @@
     state: "restarted"
     pattern: "{{ item }}"
   register: service_restart
-  with_items: swift_account_program_names
+  with_items: "{{ swift_account_program_names }}"
   failed_when: false
 
 - name: Restart swift container services
@@ -28,7 +28,7 @@
     state: "restarted"
     pattern: "{{ item }}"
   register: service_restart
-  with_items: swift_container_program_names
+  with_items: "{{ swift_container_program_names }}"
   failed_when: false
 
 - name: Restart swift object services
@@ -37,7 +37,7 @@
     state: "restarted"
     pattern: "{{ item }}"
   register: service_restart
-  with_items: swift_object_program_names
+  with_items: "{{ swift_object_program_names }}"
   failed_when: false
 
 - name: Restart swift proxy services
@@ -46,7 +46,7 @@
     state: "restarted"
     pattern: "{{ item }}"
   register: service_restart
-  with_items: swift_proxy_program_names
+  with_items: "{{ swift_proxy_program_names }}"
   failed_when: false
 
 - name: Restart service
