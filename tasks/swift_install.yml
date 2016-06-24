@@ -82,6 +82,7 @@
     path: "/var/cache/{{ swift_venv_download_url | basename }}"
     get_md5: False
   when:
+    - not swift_pypy_enabled | bool
     - not swift_developer_mode | bool
     - swift_venv_enabled | bool
   register: local_venv_stat
@@ -94,6 +95,7 @@
     url: "{{ swift_venv_download_url | replace('tgz', 'checksum') }}"
     return_content: True
   when:
+    - not swift_pypy_enabled | bool
     - not swift_developer_mode | bool
     - swift_venv_enabled | bool
   register: remote_venv_checksum
@@ -114,6 +116,7 @@
   ignore_errors: true
   register: get_venv
   when:
+    - not swift_pypy_enabled | bool
     - not swift_developer_mode | bool
     - swift_venv_enabled | bool
     - (local_venv_stat.stat.exists == False or
@@ -135,6 +138,7 @@
     path: "{{ swift_venv_bin | dirname }}"
     state: absent
   when:
+    - not swift_pypy_enabled | bool
     - swift_venv_enabled | bool
     - swift_get_venv | changed
   tags:
@@ -146,6 +150,7 @@
     path: "{{ swift_venv_bin | dirname }}"
     state: directory
   when:
+    - not swift_pypy_enabled | bool
     - not swift_developer_mode | bool
     - swift_venv_enabled | bool
     - swift_get_venv | changed
@@ -159,6 +164,7 @@
     dest: "{{ swift_venv_bin | dirname }}"
     copy: "no"
   when:
+    - not swift_pypy_enabled | bool
     - not swift_developer_mode | bool
     - swift_venv_enabled | bool
     - swift_get_venv | changed
@@ -175,22 +181,13 @@
   command: >
     virtualenv-tools --update-path=auto {{ swift_venv_bin | dirname }}
   when:
+    - not swift_pypy_enabled | bool
     - not swift_developer_mode | bool
     - swift_venv_enabled | bool
     - swift_get_venv | success
   tags:
     - swift-install
     - swift-pip-packages
-
-- include: swift_pypy_setup.yml
-  when:
-    - swift_venv_enabled | bool
-    - swift_get_venv | success
-    - swift_pypy_enabled | bool
-  tags:
-    - swift-install
-    - swift-pip-packages
-    - swift-pypy
 
 - name: Install pip packages (venv)
   pip:
@@ -205,6 +202,7 @@
   delay: 2
   with_items: swift_pip_packages
   when:
+    - not swift_pypy_enabled | bool
     - swift_venv_enabled | bool
     - swift_get_venv | failed or swift_developer_mode | bool
   notify:
@@ -227,6 +225,7 @@
   delay: 2
   with_items: swift_pip_packages
   when:
+    - not swift_pypy_enabled | bool
     - not swift_developer_mode | bool
     - not swift_venv_enabled | bool
   notify:
@@ -237,3 +236,10 @@
   tags:
     - swift-install
     - swift-pip-packages
+
+- include: swift_pypy_setup.yml
+  when: swift_pypy_enabled | bool
+  tags:
+    - swift-install
+    - swift-pip-packages
+    - swift-pypy

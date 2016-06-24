@@ -39,10 +39,48 @@
     dest: "/opt/pypy-runtime"
     copy: "no"
     creates: "/opt/pypy-runtime/{{ swift_pypy_version }}/bin/pypy"
+  register: local_pypy
 
-- name: Change virtualenv python to pypy
-  shell: |
-    virtualenv --python {{ swift_pypy_env }} "{{ swift_venv_bin | dirname }}"
-    touch "{{ swift_venv_bin | dirname }}/{{ swift_pypy_version }}-inuse"
-  args:
-    creates: "{{ swift_venv_bin | dirname }}/{{ swift_pypy_version }}-inuse"
+- name: Setup local pypy
+  command: "{{ item }}"
+  with_items:
+    - "{{ swift_pypy_env }} /opt/get-pip.py"
+    - "{{ swift_pypy_env | dirname }}/pip install --upgrade virtualenv"
+  when:
+    - local_pypy | changed
+
+- name: Check for pypy venv
+  stat:
+    path: "{{ swift_venv_bin | dirname }}/{{ swift_pypy_version }}-inuse"
+    get_md5: False
+  register: local_pypy_venv_stat
+
+- name: Remove existing venv if not pypy setup
+  file:
+    path: "{{ swift_venv_bin | dirname }}"
+    state: absent
+  when: not local_pypy_venv_stat.stat.exists | bool
+
+- name: Install pip packages into pypy venv
+  pip:
+    name: "{{ item }}"
+    state: latest
+    virtualenv: "{{ swift_venv_bin | dirname }}"
+    virtualenv_site_packages: "no"
+    virtualenv_command: "{{ swift_pypy_env | dirname }}/virtualenv"
+    extra_args: "{{ pip_install_options_fact }}"
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 2
+  with_items: "{{ swift_pip_packages }}"
+  notify:
+    - Restart swift account services
+    - Restart swift container services
+    - Restart swift object services
+    - Restart swift proxy services
+
+- name: Mark swift venv for use with pypy
+  file:
+    path: "{{ swift_venv_bin | dirname }}/{{ swift_pypy_version }}-inuse"
+    state: "touch"
