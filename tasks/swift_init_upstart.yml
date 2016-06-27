@@ -32,13 +32,3 @@
   tags:
     - upstart-init
     - swift-init
-
-- name: Load service
-  service:
-   name: "{{ program_name }}"
-   enabled: "yes"
-   state: restarted
-  when: init_script|changed
-  tags:
-    - upstart-init
-    - swift-init

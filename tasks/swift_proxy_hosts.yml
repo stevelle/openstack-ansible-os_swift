@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: swift_upstart_common_init.yml
+- include: swift_init_common.yml
   vars:
     program_name: "swift-proxy-server"
     program_config_options: "{{ swift_proxy_server_program_config_options }}"

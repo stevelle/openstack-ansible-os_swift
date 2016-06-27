@@ -14,7 +14,7 @@
 # limitations under the License.
 
 # When not using a replication network use the default configuration
-- include: swift_upstart_common_init.yml
+- include: swift_init_common.yml
   vars:
     program_name: "swift-container-replicator"
     program_config_options: "{{ swift_container_server_program_config_options }}"
@@ -27,7 +27,7 @@
     swift.replication_network == swift.storage_network
 
 # When using a replication network use the specific replicator configuration
-- include: swift_upstart_common_init.yml
+- include: swift_init_common.yml
   vars:
     program_name: "swift-container-replicator"
     program_config_options: "{{ swift_container_replicator_program_config_options }}"
@@ -42,7 +42,7 @@
 # When using a replication network create a second server for dedicated replicator configuration
 # This will be a blank file if not using dedicated replication network to prevent errors
 # when the service attempts to start.
-- include: swift_upstart_common_init.yml
+- include: swift_init_common.yml
   vars:
     program_name: "swift-container-replicator-server"
     program_binary: "swift-container-server"
@@ -52,7 +52,7 @@
     system_group: "{{ swift_system_group_name }}"
     service_home: "{{ swift_system_home_folder }}"
 
-- include: swift_upstart_common_init.yml
+- include: swift_init_common.yml
   vars:
     program_name: "swift-container-server"
     program_config_options: "{{ swift_container_server_program_config_options }}"
@@ -61,7 +61,7 @@
     system_group: "{{ swift_system_group_name }}"
     service_home: "{{ swift_system_home_folder }}"
 
-- include: swift_upstart_common_init.yml
+- include: swift_init_common.yml
   vars:
     program_name: "swift-container-auditor"
     program_config_options: "{{ swift_container_server_program_config_options }}"
@@ -70,7 +70,7 @@
     system_group: "{{ swift_system_group_name }}"
     service_home: "{{ swift_system_home_folder }}"
 
-- include: swift_upstart_common_init.yml
+- include: swift_init_common.yml
   vars:
     program_name: "swift-container-sync"
     program_config_options: "{{ swift_container_server_program_config_options }}"
@@ -79,7 +79,7 @@
     system_group: "{{ swift_system_group_name }}"
     service_home: "{{ swift_system_home_folder }}"
 
-- include: swift_upstart_common_init.yml
+- include: swift_init_common.yml
   vars:
     program_name: "swift-container-updater"
     program_config_options: "{{ swift_container_server_program_config_options }}"
@@ -88,7 +88,7 @@
     system_group: "{{ swift_system_group_name }}"
     service_home: "{{ swift_system_home_folder }}"
 
-- include: swift_upstart_common_init.yml
+- include: swift_init_common.yml
   vars:
     program_name: "swift-container-reconciler"
     program_config_options: "{{ swift_container_reconciler_program_config_options }}"
