@@ -125,7 +125,7 @@
   until: add_role|success
   retries: 5
   delay: 10
-  when: swift_ceilometer_enabled
+  when: swift_ceilometer_enabled | bool
   tags:
     - swift-ceilometer-setup
     - swift-ceilometer-role
@@ -145,7 +145,7 @@
   until: ensure_role|success
   retries: 5
   delay: 10
-  when: swift_ceilometer_enabled
+  when: swift_ceilometer_enabled | bool
   tags:
     - swift-ceilometer-setup
     - swift-ceilometer-role
