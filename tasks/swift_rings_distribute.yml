@@ -13,26 +13,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# NOTE(cloudnull): These methods have been changed to use the rsync command
+#  instead of the Synchronize module. The change was required due to an upstream
+#  issue with the module when running with delegate_to and become. Sadly the fix
+#  does not seem to be trivial. "https://github.com/ansible/ansible/issues/15405"
 - name: "Get swift rings"
-  synchronize:
-    src: "/etc/swift/ring_build_files/"
-    mode: push
-    dest: "/etc/swift/"
-    set_remote_user: False
-  delegate_to: "{{ groups['swift_hosts'][0] }}"
+  command: |
+    rsync -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' \
+          -avz {{ swift_system_user_name }}@{{ hostvars[groups['swift_hosts'][0]]['ansible_ssh_host'] }}:/etc/swift/ring_build_files/ \
+          /etc/swift/
   become: yes
   become_user: "{{ swift_system_user_name }}"
   tags:
     - swift-get-rings
+    - skip_ansible_lint
 
 - name: "Get swift rings for backup in ring_build_files directory"
-  synchronize:
-    src: "/etc/swift/ring_build_files/"
-    mode: push
-    dest: "/etc/swift/ring_build_files/"
-    set_remote_user: False
-  delegate_to: "{{ groups['swift_hosts'][0] }}"
+  command: |
+    rsync -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' \
+          -avz {{ swift_system_user_name }}@{{ hostvars[groups['swift_hosts'][0]]['ansible_ssh_host'] }}:/etc/swift/ring_build_files/ \
+          /etc/swift/ring_build_files/
   become: yes
   become_user: "{{ swift_system_user_name }}"
   tags:
     - swift-get-rings
+    - skip_ansible_lint
