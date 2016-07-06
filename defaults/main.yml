@@ -113,6 +113,11 @@ statsd_default_sample_rate: 1.0
 statsd_sample_rate_factor: 1.0
 statsd_metric_prefix:
 
+# Set the file limits
+swift_hard_open_file_limits: 10240
+swift_soft_open_file_limits: 4096
+swift_max_file_limits: "{{ swift_hard_open_file_limits * 24 }}"
+
 ## Keystone authentication middleware
 swift_keystone_auth_plugin: "password"
 
