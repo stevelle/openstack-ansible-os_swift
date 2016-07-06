@@ -101,7 +101,7 @@
   - name: Install requirements for swift
     pip:
       requirements: "{{ item }}"
-      virtualenv: "{{ swift_venv_bin | dirname }}"
+      virtualenv: "{{ swift_bin | dirname }}"
     with_items:
       - "/opt/swift/test-requirements.txt"
       - "/opt/swift/requirements.txt"

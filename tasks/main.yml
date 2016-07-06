@@ -85,12 +85,6 @@
   tags:
     - swift-setup
 
-- include: swift_command_check.yml
-  when:
-    - swift_do_sync | bool
-  tags:
-    - swift-sync
-
 - include: swift_key_setup.yml
   when:
     - swift_do_sync | bool

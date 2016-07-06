@@ -51,13 +51,13 @@
 
 - name: Check for pypy venv
   stat:
-    path: "{{ swift_venv_bin | dirname }}/{{ swift_pypy_version }}-inuse"
+    path: "{{ swift_bin | dirname }}/{{ swift_pypy_version }}-inuse"
     get_md5: False
   register: local_pypy_venv_stat
 
 - name: Remove existing venv if not pypy setup
   file:
-    path: "{{ swift_venv_bin | dirname }}"
+    path: "{{ swift_bin | dirname }}"
     state: absent
   when: not local_pypy_venv_stat.stat.exists | bool
 
@@ -65,7 +65,7 @@
   pip:
     name: "{{ item }}"
     state: latest
-    virtualenv: "{{ swift_venv_bin | dirname }}"
+    virtualenv: "{{ swift_bin | dirname }}"
     virtualenv_site_packages: "no"
     virtualenv_command: "{{ swift_pypy_env | dirname }}/virtualenv"
     extra_args: "{{ pip_install_options_fact }}"
@@ -82,5 +82,5 @@
 
 - name: Mark swift venv for use with pypy
   file:
-    path: "{{ swift_venv_bin | dirname }}/{{ swift_pypy_version }}-inuse"
+    path: "{{ swift_bin | dirname }}/{{ swift_pypy_version }}-inuse"
     state: "touch"
