@@ -299,8 +299,8 @@ swift_proxy_program_names:
 # Set this option to enable or disable the pypy interpreter for swift
 swift_pypy_enabled: false
 swift_pypy_archive:
-  url: "https://bitbucket.org/pypy/pypy/downloads/pypy-5.1.1-linux64.tar.bz2"
-  sha256: "c852622e8bc81618c137da35fcf57b2349b956c07b6fd853300846e3cefa64fc"
+  url: "https://bitbucket.org/pypy/pypy/downloads/pypy2-v5.3.1-linux64.tar.bz2"
+  sha256: "6d0e8b14875b76b1e77f06a2ee3f1fb5015a645a951ba7a7586289344d4d9c22"
 
 ## Tunable overrides
 swift_swift_conf_overrides: {}
