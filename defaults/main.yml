@@ -29,15 +29,7 @@ swift_developer_constraints:
 
 # Name of the virtual env to deploy into
 swift_venv_tag: untagged
-swift_venv_bin: "/openstack/venvs/swift-{{ swift_venv_tag }}/bin"
-
-# Set this to enable or disable installing in a venv
-swift_venv_enabled: true
-
-# The bin path defaults to the venv path however if installation in a
-#  venv is disabled the bin path will be dynamically set based on the
-#  system path used when the installing.
-swift_bin: "{{ swift_venv_bin }}"
+swift_bin: "/openstack/venvs/swift-{{ swift_venv_tag }}/bin"
 
 swift_venv_download_url: http://127.0.0.1/venvs/untagged/ubuntu/swift.tgz
 

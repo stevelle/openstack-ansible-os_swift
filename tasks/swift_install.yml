@@ -84,7 +84,6 @@
   when:
     - not swift_pypy_enabled | bool
     - not swift_developer_mode | bool
-    - swift_venv_enabled | bool
   register: local_venv_stat
   tags:
     - swift-install
@@ -97,7 +96,6 @@
   when:
     - not swift_pypy_enabled | bool
     - not swift_developer_mode | bool
-    - swift_venv_enabled | bool
   register: remote_venv_checksum
   tags:
     - swift-install
@@ -118,7 +116,6 @@
   when:
     - not swift_pypy_enabled | bool
     - not swift_developer_mode | bool
-    - swift_venv_enabled | bool
     - (local_venv_stat.stat.exists == False or
         {{ local_venv_stat.stat.checksum is defined and local_venv_stat.stat.checksum != remote_venv_checksum.content | trim }})
   tags:
@@ -128,18 +125,16 @@
 - name: Set swift get_venv fact
   set_fact:
     swift_get_venv: "{{ get_venv }}"
-  when: swift_venv_enabled | bool
   tags:
     - swift-install
     - swift-pip-packages
 
 - name: Remove existing venv
   file:
-    path: "{{ swift_venv_bin | dirname }}"
+    path: "{{ swift_bin | dirname }}"
     state: absent
   when:
     - not swift_pypy_enabled | bool
-    - swift_venv_enabled | bool
     - swift_get_venv | changed
   tags:
     - swift-install
@@ -147,13 +142,9 @@
 
 - name: Create swift venv dir
   file:
-    path: "{{ swift_venv_bin | dirname }}"
+    path: "{{ swift_bin | dirname }}"
     state: directory
-  when:
-    - not swift_pypy_enabled | bool
-    - not swift_developer_mode | bool
-    - swift_venv_enabled | bool
-    - swift_get_venv | changed
+  register: swift_venv_dir
   tags:
     - swift-install
     - swift-pip-packages
@@ -161,13 +152,36 @@
 - name: Unarchive pre-built venv
   unarchive:
     src: "/var/cache/{{ swift_venv_download_url | basename }}"
-    dest: "{{ swift_venv_bin | dirname }}"
+    dest: "{{ swift_bin | dirname }}"
     copy: "no"
   when:
     - not swift_pypy_enabled | bool
     - not swift_developer_mode | bool
-    - swift_venv_enabled | bool
-    - swift_get_venv | changed
+    - swift_get_venv | changed or swift_venv_dir | changed
+  notify:
+    - Restart swift account services
+    - Restart swift container services
+    - Restart swift object services
+    - Restart swift proxy services
+  tags:
+    - swift-install
+    - swift-pip-packages
+
+- name: Install pip packages
+  pip:
+    name: "{{ item }}"
+    state: latest
+    virtualenv: "{{ swift_bin | dirname }}"
+    virtualenv_site_packages: "no"
+    extra_args: "{{ pip_install_options_fact }}"
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 2
+  with_items: swift_pip_packages
+  when:
+    - not swift_pypy_enabled | bool
+    - swift_get_venv | failed or swift_developer_mode | bool
   notify:
     - Restart swift account services
     - Restart swift container services
@@ -179,60 +193,11 @@
 
 - name: Update virtualenv path
   command: >
-    virtualenv-tools --update-path=auto {{ swift_venv_bin | dirname }}
+    virtualenv-tools --update-path=auto {{ swift_bin | dirname }}
   when:
     - not swift_pypy_enabled | bool
     - not swift_developer_mode | bool
-    - swift_venv_enabled | bool
     - swift_get_venv | success
-  tags:
-    - swift-install
-    - swift-pip-packages
-
-- name: Install pip packages (venv)
-  pip:
-    name: "{{ item }}"
-    state: latest
-    virtualenv: "{{ swift_venv_bin | dirname }}"
-    virtualenv_site_packages: "no"
-    extra_args: "{{ pip_install_options_fact }}"
-  register: install_packages
-  until: install_packages|success
-  retries: 5
-  delay: 2
-  with_items: swift_pip_packages
-  when:
-    - not swift_pypy_enabled | bool
-    - swift_venv_enabled | bool
-    - swift_get_venv | failed or swift_developer_mode | bool
-  notify:
-    - Restart swift account services
-    - Restart swift container services
-    - Restart swift object services
-    - Restart swift proxy services
-  tags:
-    - swift-install
-    - swift-pip-packages
-
-- name: Install pip packages (no venv)
-  pip:
-    name: "{{ item }}"
-    state: latest
-    extra_args: "{{ pip_install_options_fact }}"
-  register: install_packages
-  until: install_packages|success
-  retries: 5
-  delay: 2
-  with_items: swift_pip_packages
-  when:
-    - not swift_pypy_enabled | bool
-    - not swift_developer_mode | bool
-    - not swift_venv_enabled | bool
-  notify:
-    - Restart swift account services
-    - Restart swift container services
-    - Restart swift object services
-    - Restart swift proxy services
   tags:
     - swift-install
     - swift-pip-packages

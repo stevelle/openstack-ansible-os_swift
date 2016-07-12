@@ -73,17 +73,6 @@
   tags:
     - swift-dirs
 
-- name: Create swift venv dir
-  file:
-    path: "{{ item.path }}"
-    state: directory
-  with_items:
-    - { path: "/openstack/venvs" }
-    - { path: "{{ swift_venv_bin }}" }
-  when: swift_venv_enabled | bool
-  tags:
-    - swift-dirs
-
 - name: Test for log directory or link
   shell: |
     if [ -h "/var/log/swift"  ]; then

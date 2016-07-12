@@ -147,7 +147,7 @@
 - name: Create drive-audit cron job
   cron:
     name: "Run drive-audit script"
-    job: "{{ swift_venv_bin }}/swift-drive-audit /etc/swift/drive-audit.conf"
+    job: "{{ swift_bin }}/swift-drive-audit /etc/swift/drive-audit.conf"
     minute: 15
     cron_file: swift-drive-audit
     user: root

@@ -73,7 +73,7 @@ swift_service_password: "secrete"
 swift_developer_mode: true
 swift_git_install_branch: master
 swift_venv_tag: untagged
-swift_venv_bin: "/openstack/venvs/swift-{{ swift_venv_tag }}/bin"
+swift_bin: "/openstack/venvs/swift-{{ swift_venv_tag }}/bin"
 swift_service_publicuri: "http://10.100.100.102:8080"
 swift_service_adminuri: "http://10.100.100.102:8080"
 swift_service_internaluri: "http://10.100.100.102:8080"
