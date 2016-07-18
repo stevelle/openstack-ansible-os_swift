@@ -63,7 +63,7 @@
 
 - name: Install pip packages into pypy venv
   pip:
-    name: "{{ item }}"
+    name: "{{ swift_pip_packages | join(' ') }}"
     state: latest
     virtualenv: "{{ swift_bin | dirname }}"
     virtualenv_site_packages: "no"
@@ -73,7 +73,6 @@
   until: install_packages|success
   retries: 5
   delay: 2
-  with_items: "{{ swift_pip_packages }}"
   notify:
     - Restart swift account services
     - Restart swift container services
