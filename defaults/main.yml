@@ -19,6 +19,10 @@ swift_ceilometer_enabled: False
 ## Verbosity Options
 debug: False
 
+# Set the package install state for distribution packages
+# Options are 'present' and 'latest'
+swift_package_state: "latest"
+
 swift_git_repo: https://git.openstack.org/openstack/swift
 swift_git_install_branch: master
 swift_requirements_git_repo: https://git.openstack.org/openstack/requirements
