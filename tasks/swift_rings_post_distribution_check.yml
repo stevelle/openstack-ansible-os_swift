@@ -28,7 +28,7 @@
       "The builder files on the remote host {{ item }}:{{ hostvars[item]['builder_md5sum'] }}
        do not match {{ inventory_hostname }}:{{ md5sum.stdout }}"
   when: hostvars[item]['builder_md5sum'] != md5sum.stdout
-  with_items: groups['swift_all'] + groups['swift_remote_all']
+  with_items: "{{ groups['swift_all'] + groups['swift_remote_all'] }}"
   tags:
     - swift-ring-check
 
@@ -47,7 +47,7 @@
   command: "/etc/swift/scripts/swift_rings_check.py -f /etc/swift/scripts/{{ item[0] }}.contents{% if item[1] %} -r {{ item[1] }} {% endif %}"
   with_nested:
     - [ 'account', 'container' ]
-    - swift_managed_regions | default([None])
+    - "{{ swift_managed_regions | default([None]) }}"
   become: yes
   become_user: "{{ swift_system_user_name }}"
   args:
@@ -60,7 +60,7 @@
   command: "/etc/swift/scripts/swift_rings_check.py -f /etc/swift/scripts/object-{{ item[0].policy.index }}.contents{% if item[1] %} -r {{ item[1] }} {% endif %}"
   with_nested:
     - "{{ swift.storage_policies }}"
-    - swift_managed_regions | default([None])
+    - "{{ swift_managed_regions | default([None]) }}"
   become: yes
   become_user: "{{ swift_system_user_name }}"
   args:

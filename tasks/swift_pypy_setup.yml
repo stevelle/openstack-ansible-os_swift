@@ -25,14 +25,6 @@
     path: "/opt/pypy-runtime"
     state: directory
 
-- name: Set pypy version fact
-  set_fact:
-    swift_pypy_version: "{{ swift_pypy_archive['url'] | basename | replace('.tar.bz2', '') }}"
-
-- name: Set pypy env fact
-  set_fact:
-    swift_pypy_env: "/opt/pypy-runtime/{{ swift_pypy_version }}/bin/pypy"
-
 - name: Unarchive pre-built pypy
   unarchive:
     src: "/var/cache/{{ swift_pypy_archive['url'] | basename }}"

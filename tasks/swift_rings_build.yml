@@ -54,7 +54,7 @@
   command: "/etc/swift/scripts/swift_rings.py -f /etc/swift/scripts/{{ item[0] }}.contents{% if item[1] %} -r {{ item[1] }}{% endif %}{{ (swift_pretend_min_part_hours_passed | bool) | ternary(' -p', '')}}"
   with_nested:
     - [ 'account', 'container' ]
-    - swift_managed_regions | default([None])
+    - "{{ swift_managed_regions | default([None]) }}"
   become: yes
   become_user: "{{ swift_system_user_name }}"
   args:
@@ -67,7 +67,7 @@
   command: "/etc/swift/scripts/swift_rings.py -f /etc/swift/scripts/object-{{ item[0].policy.index }}.contents{% if item[1] %} -r {{ item[1] }}{% endif %}{{ (swift_pretend_min_part_hours_passed | bool) | ternary(' -p', '')}}"
   with_nested:
     - "{{ swift.storage_policies }}"
-    - swift_managed_regions | default([None])
+    - "{{ swift_managed_regions | default([None]) }}"
   become: yes
   become_user: "{{ swift_system_user_name }}"
   args:
