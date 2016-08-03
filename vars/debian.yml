@@ -25,3 +25,4 @@ swift_apt_packages:
   - openssh-server
   - python-dev
   - rsync
+  - libssl-dev
