@@ -81,6 +81,11 @@ swift_middleware_list:
 
 ## Swift default ports
 swift_proxy_port: "8080"
+# You can change the object, container, account ports.
+# This will update the ring, on the next playbook run,
+# without requiring a rebalance.
+# NB: There is service downtime, during the run, between
+# the service restart and the ring updating.
 swift_object_port: "6000"
 swift_container_port: "6001"
 swift_account_port: "6002"

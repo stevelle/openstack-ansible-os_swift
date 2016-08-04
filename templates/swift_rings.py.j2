@@ -27,7 +27,9 @@ import threading
 
 USAGE = "usage: %prog -f <swift_ring.contents> -r <managed_region>"
 
-DEVICE_KEY = "%(ip)s:%(port)d/%(device)s"
+DEVICE_KEY = "%(ip)s/%(device)s"
+FULL_HOST_KEY = "%(ip)s:%(port)dR%(replication_ip)s:" \
+                "%(replication_port)d/%(device)s"
 
 
 class RingValidationError(Exception):
@@ -82,28 +84,22 @@ def update_host_in_ring(build_file, new_host, old_host, validate=False):
                                   'be done when the drive is added' % devstr)
 
     try:
-        r_ip = new_host.get('repl_ip', new_host['ip'])
-        r_port = new_host.get('repl_port', new_host['port'])
-        weight = new_host.get('weight')
+        old_host_str = FULL_HOST_KEY % old_host
+        new_host_str = FULL_HOST_KEY % new_host
 
-        old_r_ip = old_host['replication_ip']
-        old_r_port = old_host['replication_port']
+        new_weight = new_host.get('weight')
+        old_weight = old_host.get('weight')
 
-        if r_ip != old_r_ip or r_port != old_r_port:
-            host_d = {'r_ip': r_ip, 'r_port': r_port}
-            host_d.update(new_host)
-            host_str = (
-                "%(ip)s:%(port)dR%(r_ip)s:%(r_port)d/%(device)s" % host_d
-            )
+        if new_host_str != old_host_str:
             if not validate:
                 run_and_wait(rb_main, ["swift-ring-builder", build_file,
-                                       "set_info", DEVICE_KEY % new_host,
-                                       host_str])
+                                       "set_info", old_host_str,
+                                       new_host_str])
     except Exception as ex:
         raise RingValidationError(ex)
 
-    if weight != old_host['weight'] and not validate:
-        change_host_weight(build_file, DEVICE_KEY % new_host, weight)
+    if new_weight != old_weight and not validate:
+        change_host_weight(build_file, FULL_HOST_KEY % new_host, new_weight)
 
 
 def add_host_to_ring(build_file, host, validate=False):
@@ -111,17 +107,8 @@ def add_host_to_ring(build_file, host, validate=False):
     try:
         if host.get('region') is not None:
             host_str += 'r%(region)d' % host
-        host_str += "z%d" % (host.get('zone'))
-        host_str += "-%(ip)s:%(port)d" % host
-        if host.get('repl_ip'):
-            r_ip = host['repl_ip']
-            r_port = host.get('repl_port', host['port'])
-            host_str += "R%s:%d" % (r_ip, r_port)
-        elif host.get('repl_port'):
-            r_ip = host.get('repl_ip', host['ip'])
-            r_port = host['repl_port']
-            host_str += "R%s:%d" % (r_ip, r_port)
-        host_str += "/%(device)s" % host
+        host_str += "z%(zone)d-" % host
+        host_str += FULL_HOST_KEY % host
         weight = host.get('weight')
     except Exception as ex:
         raise RingValidationError(ex)
@@ -202,6 +189,11 @@ def build_ring(build_name, repl, min_part_hours, part_power, hosts,
                 )
             run_and_wait(
                 rb_main, ["swift-ring-builder", build_file, "rebalance"]
+            )
+            # In case no changes that require a rebalance have happened
+            # We may still need to write the ring for device changes.
+            run_and_wait(
+                rb_main, ["swift-ring-builder", build_file, "write_ring"]
             )
 
 

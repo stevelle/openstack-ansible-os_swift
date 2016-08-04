@@ -87,8 +87,8 @@
 {%       set _update = device.update({'weight': weight}) %}
 {%       set _update = device.update({'region': region}) %}
 {%       set _update = device.update({'zone': zone}) %}
-{%       set _update = device.update({'repl_ip': repl_ip}) %}
-{%       set _update = device.update({'repl_port': repl_port|int}) %}
+{%       set _update = device.update({'replication_ip': repl_ip}) %}
+{%       set _update = device.update({'replication_port': repl_port|int}) %}
 {%       set _update = device.update({'ip': storage_ip}) %}
 {%       set _update = device.update({'port': storage_port|int}) %}
 {###     Append the device to the drives list of the builder dict #}

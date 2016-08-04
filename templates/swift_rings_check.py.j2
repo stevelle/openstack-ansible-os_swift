@@ -24,6 +24,8 @@ import sys
 USAGE = "usage: %prog -f <swift_ring.contentsa> -r <managed_region>"
 
 DEVICE_KEY = "%(ip)s:%(port)d/%(device)s"
+FULL_HOST_KEY = "%(ip)s:%(port)dR%(replication_ip)s:" \
+                "%(replication_port)d/%(device)s_w%(weight)d"
 
 
 class RingComparisonError(Exception):
@@ -69,21 +71,12 @@ def check_host_settings(content_host, ring_host):
         raise RingComparisonError('Region on device %s differs to the ring.'
                                   % devstr)
 
-    content_repl_ip = content_host.get('repl_ip', content_host['ip'])
-    content_repl_port = content_host.get('repl_port', content_host['port'])
-    content_weight = content_host.get('weight')
-    ring_repl_ip = ring_host['replication_ip']
-    ring_repl_port = ring_host['replication_port']
-    ring_weight = ring_host['weight']
-    if content_repl_ip != ring_repl_ip:
-        raise RingComparisonError('Replication IP for device %s differs '
-                                  'to the ring.' % devstr)
-    if content_repl_port != ring_repl_port:
-        raise RingComparisonError('Replication Port for device %s differs '
-                                  'to the ring.' % devstr)
-    if content_weight != ring_weight:
-        raise RingComparisonError('Device weight for device %s differs to the '
-                                  'ring.' % devstr)
+    content_host_str = FULL_HOST_KEY % content_host
+    ring_host_str = FULL_HOST_KEY % ring_host
+
+    if content_host_str != ring_host_str:
+        raise RingComparisonError('Content device %(content_host_str)s differs'
+                                  ' to the ring device %(ring_host_str)s.')
 
 
 def check_ring(build_name, repl, min_part_hours, part_power, content_hosts,
