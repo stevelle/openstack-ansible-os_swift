@@ -4,6 +4,8 @@
 {% set api_threads = _api_threads if _api_threads > 0 else 1 %}
 
 [DEFAULT]
+# Disable stderr logging
+use_stderr = False
 bind_ip = 0.0.0.0
 bind_port = {{ swift_proxy_port }}
 workers = {{ swift_proxy_server_workers | default(api_threads) }}
