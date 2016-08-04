@@ -4,6 +4,8 @@
 {% set api_threads = _api_threads if _api_threads > 0 else 1 %}
 
 [DEFAULT]
+# Disable stderr logging
+use_stderr = False
 {% set repl_bridge = 'ansible_' + swift.replication_network|replace('-', '_') %}
 bind_ip = {{ hostvars[inventory_hostname][repl_bridge]['ipv4']['address'] }}
 bind_port = {{ swift_container_port }}
