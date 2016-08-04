@@ -313,6 +313,12 @@ swift_pypy_archive:
 swift_pypy_version: "{{ swift_pypy_archive['url'] | basename | replace('.tar.bz2', '') }}"
 swift_pypy_env: "/opt/pypy-runtime/{{ swift_pypy_version }}/bin/pypy"
 
+# This variable is used by the repo_build process to determine
+# which host group to check for members of before building the
+# pip packages required by this role. The value is picked up
+# by the py_pkgs lookup.
+swift_role_project_group: swift_all
+
 ## Tunable overrides
 swift_swift_conf_overrides: {}
 swift_swift_dispersion_conf_overrides: {}
