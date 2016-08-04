@@ -7,6 +7,8 @@
 #$template HourlyProxyLog,"/var/log/swift/hourly/%$YEAR%%$MONTH%%$DAY%%$HOUR%"
 #local1.*;local1.!notice ?HourlyProxyLog
 
+$FileCreateMode {{ swift_syslog_log_perms }}
+
 local1.*;local1.!notice /var/log/swift/proxy.log
 local1.notice           /var/log/swift/proxy-error.log
 local1.*                ~
