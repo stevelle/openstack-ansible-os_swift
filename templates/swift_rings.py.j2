@@ -258,7 +258,7 @@ if __name__ == "__main__":
         help="Reset the clock on the last time a rebalance happened.",
         dest="reset_mph_clock",
         action="store_true",
-        default='False'
+        default=False
     )
 
     options, _args = parser.parse_args(sys.argv[1:])
