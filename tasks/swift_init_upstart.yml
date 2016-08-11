@@ -21,14 +21,8 @@
     owner: "root"
     group: "root"
   register: init_script
-  tags:
-    - upstart-init
-    - swift-init
 
 - name: Reload init scripts
   shell: |
     initctl reload-configuration
   when: init_script|changed
-  tags:
-    - upstart-init
-    - swift-init

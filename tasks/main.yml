@@ -42,19 +42,21 @@
     - swift_do_setup | bool
     - inventory_hostname in groups['swift_all']
   tags:
-    - swift-setup
+    - swift-install
+
 - include: swift_install.yml
   when:
     - swift_do_setup | bool
     - inventory_hostname in groups['swift_all']
   tags:
-    - swift-setup
+    - swift-install
+
 - include: swift_post_install.yml
   when:
     - swift_do_setup | bool
     - inventory_hostname in groups['swift_all']
   tags:
-    - swift-setup
+    - swift-config
 
 # We need swift_vars to exist for the "swift_vars.drives is defined check" to work
 - name: "Set swift_vars if undefined"
@@ -62,24 +64,23 @@
     swift_vars: "{}"
   when: swift_vars is not defined
   tags:
-    - swift-storage-hosts
-    - swift-setup
+    - always
 
 - include: swift_storage_hosts.yml
   when:
     - inventory_hostname in groups['swift_hosts']
     - swift_do_setup | bool
   tags:
-    - swift-storage-hosts
-    - swift-setup
+    - swift-install
+    - swift-config
 
 - include: swift_proxy_hosts.yml
   when:
     - inventory_hostname in groups['swift_proxy']
     - swift_do_setup | bool
   tags:
-    - swift-proxy-hosts
-    - swift-setup
+    - swift-config
+    - swift-install
 
 - include: swift_service_setup.yml
   when:
@@ -87,31 +88,26 @@
     - '"keystoneauth" in swift_middleware_list'
     - swift_do_setup | bool
   tags:
-    - swift-setup
+    - swift-install
 
 - name: Flush handlers
   meta: flush_handlers
-  tags:
-    - swift-setup
 
 - include: swift_key_setup.yml
   when:
     - swift_do_sync | bool
   tags:
-    - swift-key
-    - swift-key-distribute
-    - swift-sync
+    - swift-config
 
 - include: swift_rings.yml
   when:
     - swift_do_sync | bool
   tags:
-    - swift-rings
-    - swift-sync
+    - swift-install
+    - swift-config
 
 - include: swift_sync_post_install.yml
   when:
     - swift_do_sync | bool
   tags:
-    - swift-sync-post-install
-    - swift-sync
+    - always

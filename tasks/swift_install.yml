@@ -16,8 +16,6 @@
 - include: install-apt.yml
   when:
     - ansible_pkg_mgr == 'apt'
-  tags:
-    - install-apt
 
 - name: Create developer mode constraint file
   copy:
@@ -28,9 +26,6 @@
       {% endfor %}
   when:
     - swift_developer_mode | bool
-  tags:
-    - swift-install
-    - swift-pip-packages
 
 - name: Clone requirements git repository
   git:
@@ -41,27 +36,18 @@
     version: "{{ swift_requirements_git_install_branch }}"
   when:
     - swift_developer_mode | bool
-  tags:
-    - swift-install
-    - swift-pip-packages
 
 - name: Add constraints to pip_install_options fact for developer mode
   set_fact:
     pip_install_options_fact: "{{ pip_install_options|default('') }} --constraint /opt/developer-pip-constraints.txt --constraint /opt/requirements/upper-constraints.txt"
   when:
     - swift_developer_mode | bool
-  tags:
-    - swift-install
-    - swift-pip-packages
 
 - name: Set pip_install_options_fact when not in developer mode
   set_fact:
     pip_install_options_fact: "{{ pip_install_options|default('') }}"
   when:
     - not swift_developer_mode | bool
-  tags:
-    - swift-install
-    - swift-pip-packages
 
 - name: Install requires pip packages
   pip:
@@ -72,9 +58,6 @@
   until: install_packages|success
   retries: 5
   delay: 2
-  tags:
-    - swift-install
-    - swift-pip-packages
 
 - name: Get local venv checksum
   stat:
@@ -84,9 +67,6 @@
     - not swift_pypy_enabled | bool
     - not swift_developer_mode | bool
   register: local_venv_stat
-  tags:
-    - swift-install
-    - swift-pip-packages
 
 - name: Get remote venv checksum
   uri:
@@ -96,9 +76,6 @@
     - not swift_pypy_enabled | bool
     - not swift_developer_mode | bool
   register: remote_venv_checksum
-  tags:
-    - swift-install
-    - swift-pip-packages
 
 # TODO: When project moves to ansible 2 we can pass this a sha256sum which will:
 #       a) allow us to remove force: yes
@@ -117,16 +94,10 @@
     - not swift_developer_mode | bool
     - (local_venv_stat.stat.exists == False or
         {{ local_venv_stat.stat.checksum is defined and local_venv_stat.stat.checksum != remote_venv_checksum.content | trim }})
-  tags:
-    - swift-install
-    - swift-pip-packages
 
 - name: Set swift get_venv fact
   set_fact:
     swift_get_venv: "{{ get_venv }}"
-  tags:
-    - swift-install
-    - swift-pip-packages
 
 - name: Remove existing venv
   file:
@@ -135,18 +106,12 @@
   when:
     - not swift_pypy_enabled | bool
     - swift_get_venv | changed
-  tags:
-    - swift-install
-    - swift-pip-packages
 
 - name: Create swift venv dir
   file:
     path: "{{ swift_bin | dirname }}"
     state: directory
   register: swift_venv_dir
-  tags:
-    - swift-install
-    - swift-pip-packages
 
 - name: Unarchive pre-built venv
   unarchive:
@@ -162,9 +127,6 @@
     - Restart swift container services
     - Restart swift object services
     - Restart swift proxy services
-  tags:
-    - swift-install
-    - swift-pip-packages
 
 - name: Install pip packages
   pip:
@@ -185,9 +147,6 @@
     - Restart swift container services
     - Restart swift object services
     - Restart swift proxy services
-  tags:
-    - swift-install
-    - swift-pip-packages
 
 - name: Update virtualenv path
   command: >
@@ -196,13 +155,6 @@
     - not swift_pypy_enabled | bool
     - not swift_developer_mode | bool
     - swift_get_venv | success
-  tags:
-    - swift-install
-    - swift-pip-packages
 
 - include: swift_pypy_setup.yml
   when: swift_pypy_enabled | bool
-  tags:
-    - swift-install
-    - swift-pip-packages
-    - swift-pypy

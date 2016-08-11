@@ -21,7 +21,3 @@
   when:
     - hostvars[item] is defined
     - hostvars[item]['swift_pubkey'] is defined
-  tags:
-    - swift-key
-    - swift-key-create
-    - swift-key-distribute

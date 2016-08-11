@@ -17,15 +17,11 @@
   shell: |
     cat /etc/swift/ring_build_files/*.builder 2>/dev/null | md5sum | cut -d " " -f1
   register: md5sum
-  tags:
-    - swift-ring-check
 
 - name: Get empty md5sum
   shell: |
     echo -n | md5sum | cut -d " " -f1
   register: empty_md5sum
-  tags:
-    - swift-ring-check
 
 # Fail if the remote hosts builder files is not empty AND
 # does not match the md5sum of the local host.
@@ -41,5 +37,3 @@
     - hostvars[item]['builder_md5sum'] != empty_md5sum.stdout
     - hostvars[item]['builder_md5sum'] != md5sum.stdout
   with_items: "{{ groups['swift_all'] + groups['swift_remote_all'] }}"
-  tags:
-    - swift-ring-check

@@ -24,9 +24,6 @@
           /etc/swift/
   become: yes
   become_user: "{{ swift_system_user_name }}"
-  tags:
-    - swift-get-rings
-    - skip_ansible_lint
 
 - name: "Get swift rings for backup in ring_build_files directory"
   command: |
@@ -35,6 +32,3 @@
           /etc/swift/ring_build_files/
   become: yes
   become_user: "{{ swift_system_user_name }}"
-  tags:
-    - swift-get-rings
-    - skip_ansible_lint

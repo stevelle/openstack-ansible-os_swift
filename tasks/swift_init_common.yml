@@ -15,15 +15,9 @@
 
 - include: swift_init_upstart.yml
   when: pid1_name == "init"
-  tags:
-    - upstart-init
-    - swift-init
 
 - include: swift_init_systemd.yml
   when: pid1_name == "systemd"
-  tags:
-    - systemd-init
-    - swift-init
 
 - name: Load service
   service:
@@ -31,5 +25,3 @@
    enabled: "yes"
    state: restarted
   when: init_script|changed
-  tags:
-    - swift-init

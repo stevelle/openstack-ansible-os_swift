@@ -17,8 +17,6 @@
   shell: |
     cat /etc/swift/ring_build_files/*.builder 2>/dev/null | md5sum | cut -d " " -f1
   register: md5sum
-  tags:
-    - swift-ring-check
 
 # Fail if the remote hosts builder files don't match
 # As this is post sync all should match and not be empty
@@ -29,8 +27,6 @@
        do not match {{ inventory_hostname }}:{{ md5sum.stdout }}"
   when: hostvars[item]['builder_md5sum'] != md5sum.stdout
   with_items: "{{ groups['swift_all'] + groups['swift_remote_all'] }}"
-  tags:
-    - swift-ring-check
 
 - name: "Copy the swift_rings_check.py file"
   template:
@@ -39,9 +35,6 @@
     owner: "{{ swift_system_user_name }}"
     group: "{{ swift_system_group_name }}"
     mode: "0700"
-  tags:
-    - swift-rings
-    - swift-rings-scripts
 
 - name: "Ensure contents file matches ring after ring sync for account/container"
   command: "/etc/swift/scripts/swift_rings_check.py -f /etc/swift/scripts/{{ item[0] }}.contents{% if item[1] %} -r {{ item[1] }} {% endif %}"
@@ -52,9 +45,6 @@
   become_user: "{{ swift_system_user_name }}"
   args:
     chdir: /etc/swift/ring_build_files/
-  tags:
-    - swift-rings
-    - swift-rings-check
 
 - name: "Ensure contents file matches ring after ring sync for storage policies"
   command: "/etc/swift/scripts/swift_rings_check.py -f /etc/swift/scripts/object-{{ item[0].policy.index }}.contents{% if item[1] %} -r {{ item[1] }} {% endif %}"
@@ -65,6 +55,3 @@
   become_user: "{{ swift_system_user_name }}"
   args:
     chdir: /etc/swift/ring_build_files/
-  tags:
-    - swift-rings
-    - swift-rings-check
