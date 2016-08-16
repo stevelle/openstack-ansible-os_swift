@@ -1,20 +1,11 @@
-OpenStack-Ansible Swift
-#######################
-:tags: openstack, swift, cloud, ansible
-:category: \*nix
+================================
+Swift role for OpenStack-Ansible
+================================
 
-Ansible role to install OpenStack Swift and Swift registry.
+Ansible role to install OpenStack swift and swift registry.
 
-This role will install the following:
-    * swift
+Documentation for the project can be found at:
+  http://docs.openstack.org/developer/openstack-ansible-os_swift
 
-.. code-block:: yaml
-
-    - name: Install swift server
-      hosts: swift_all
-      user: root
-      roles:
-        - { role: "os_swift", tags: [ "os-swift" ] }
-      vars:
-        external_lb_vip_address: 172.16.24.1
-        internal_lb_vip_address: 192.168.0.1
+The project home is at:
+  http://launchpad.net/openstack-ansible
