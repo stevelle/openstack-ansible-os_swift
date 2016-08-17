@@ -17,11 +17,7 @@
   shell: |
     cat /etc/swift/*.builder 2>/dev/null | md5sum | cut -d " " -f1
   register: md5sum
-  tags:
-    - swift-md5sum
 
 - name: Register a fact for the md5sum
   set_fact:
      builder_md5sum: "{{ md5sum.stdout }}"
-  tags:
-    - swift-md5sum

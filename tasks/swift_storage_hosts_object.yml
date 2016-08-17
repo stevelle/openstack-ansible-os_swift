@@ -141,8 +141,6 @@
     mode: "0644"
     config_overrides: "{{ swift_drive_audit_conf_overrides }}"
     config_type: "ini"
-  tags:
-    - swift-drive-audit
 
 - name: Create drive-audit cron job
   cron:
@@ -151,5 +149,3 @@
     minute: 15
     cron_file: swift-drive-audit
     user: root
-  tags:
-    - swift-drive-audit

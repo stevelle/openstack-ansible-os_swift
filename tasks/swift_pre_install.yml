@@ -18,8 +18,6 @@
     name: "{{ swift_system_group_name }}"
     state: "present"
     system: "yes"
-  tags:
-    - swift-group
 
 - name: Remove old key file(s) if found
   file:
@@ -30,9 +28,6 @@
     - "{{ swift_system_home_folder }}/.ssh/id_rsa"
     - "{{ swift_system_home_folder }}/.ssh/id_rsa.pub"
   when: swift_recreate_keys | bool
-  tags:
-    - swift-key
-    - swift-key-create
 
 - name: Create the swift system user
   user:
@@ -44,10 +39,6 @@
     createhome: "yes"
     home: "{{ swift_system_home_folder }}"
     generate_ssh_key: "yes"
-  tags:
-    - swift-user
-    - swift-key
-    - swift-key-create
 
 - name: Create swift dir
   file:
@@ -70,8 +61,6 @@
     - { path: "/var/cache/swift" }
     - { path: "{{ swift_system_home_folder }}" }
     - { path: "/etc/rsync.d", owner: "root", group: "root" }
-  tags:
-    - swift-dirs
 
 - name: Test for log directory or link
   shell: |
@@ -84,9 +73,6 @@
   register: log_dir
   failed_when: false
   changed_when: log_dir.rc != 0
-  tags:
-    - swift-dirs
-    - swift-logs
 
 - name: Create swift log dir
   file:
@@ -96,9 +82,6 @@
     group: "{{ swift_syslog_group_name }}"
     mode: "0755"
   when: log_dir.rc != 0
-  tags:
-    - swift-dirs
-    - swift-logs
 
 - name: Configure mlocate for cron.daily
   template:
@@ -107,8 +90,6 @@
     mode: "0755"
     owner: "root"
     group: "root"
-  tags:
-    - swift-crond
 
 - name: Configure soft file limits
   lineinfile:
@@ -117,8 +98,6 @@
     state: "present"
     line: "{{ swift_system_user_name }}\tsoft\tnofile\t\t{{ swift_soft_open_file_limits }}"
     insertbefore: "^# End of file"
-  tags:
-    - swift-config
 
 - name: Configure hard file limits
   lineinfile:
@@ -127,5 +106,3 @@
     state: "present"
     line: "{{ swift_system_user_name }}\thard\tnofile\t\t{{ swift_hard_open_file_limits }}"
     insertbefore: "^# End of file"
-  tags:
-    - swift-config

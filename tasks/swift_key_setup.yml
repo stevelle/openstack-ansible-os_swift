@@ -14,12 +14,5 @@
 # limitations under the License.
 
 - include: swift_key_populate.yml
-  tags:
-    - swift-key
-    - swift-key-create
 
 - include: swift_key_distribute.yml
-  tags:
-    - swift-key
-    - swift-key-create
-    - swift-key-distribute

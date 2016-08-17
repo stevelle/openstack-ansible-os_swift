@@ -29,9 +29,6 @@
   until: add_service|success
   retries: 5
   delay: 2
-  tags:
-    - swift-api-setup
-    - swift-service-add
 
 # Create an admin user
 - name: Ensure swift user
@@ -50,9 +47,6 @@
   until: add_service|success
   retries: 5
   delay: 10
-  tags:
-    - swift-api-setup
-    - swift-service-add
 
 # Add a role to the user
 - name: Ensure swift user to admin role
@@ -71,9 +65,6 @@
   until: add_service|success
   retries: 5
   delay: 10
-  tags:
-    - swift-api-setup
-    - swift-service-add
 
 - name: Ensure swiftoperator role
   keystone:
@@ -88,9 +79,6 @@
   until: add_service|success
   retries: 5
   delay: 10
-  tags:
-    - swift-api-setup
-    - swift-service-add
 
 - name: "Create keystone user for swift-dispersion"
   keystone:
@@ -108,9 +96,6 @@
   until: add_service|success
   retries: 5
   delay: 10
-  tags:
-    - swift-api-setup
-    - swift-service-add
 
 - name: "Create keystone role for ResellerAdmin"
   keystone:
@@ -126,9 +111,6 @@
   retries: 5
   delay: 10
   when: swift_ceilometer_enabled | bool
-  tags:
-    - swift-ceilometer-setup
-    - swift-ceilometer-role
 
 - name: "Add ResellerAdmin role to the service tenant and ceilometer user"
   keystone:
@@ -146,9 +128,6 @@
   retries: 5
   delay: 10
   when: swift_ceilometer_enabled | bool
-  tags:
-    - swift-ceilometer-setup
-    - swift-ceilometer-role
 
 - name: "Add swiftoperator role to swift-dispersion user"
   keystone:
@@ -165,9 +144,6 @@
   until: add_service|success
   retries: 5
   delay: 10
-  tags:
-    - swift-api-setup
-    - swift-service-add
 
 # Create an endpoint
 - name: Ensure swift endpoint
@@ -192,6 +168,3 @@
   until: add_service|success
   retries: 5
   delay: 10
-  tags:
-    - swift-api-setup
-    - swift-service-add

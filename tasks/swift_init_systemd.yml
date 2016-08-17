@@ -20,9 +20,6 @@
     owner: "{{ system_user }}"
     group: "{{ system_group }}"
     mode: "02755"
-  tags:
-    - systemd-init
-    - swift-init
 
 - name: Create TEMP lock dir
   file:
@@ -31,9 +28,6 @@
     owner: "{{ system_user }}"
     group: "{{ system_group }}"
     mode: "02755"
-  tags:
-    - systemd-init
-    - swift-init
 
 - name: Create tempfile.d entry
   template:
@@ -42,9 +36,6 @@
     mode: "0644"
     owner: "root"
     group: "root"
-  tags:
-    - systemd-init
-    - swift-init
 
 - name: Place the systemd init script
   template:
@@ -54,13 +45,7 @@
     owner: "root"
     group: "root"
   register: init_script
-  tags:
-    - systemd-init
-    - swift-init
 
 - name: Reload the systemd daemon
   command: "systemctl daemon-reload"
   when: init_script | changed
-  tags:
-    - systemd-init
-    - swift-init
