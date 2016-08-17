@@ -104,7 +104,6 @@
       virtualenv: "{{ swift_bin | dirname }}"
     with_items:
       - "/opt/swift/test-requirements.txt"
-      - "/opt/swift/requirements.txt"
   - name: Setup test.conf for testing
     template:
       src: "swift_test.conf.j2"
