@@ -13,8 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# We can set the swift_groups so that the multi-region test will run against only the local hosts
+# when the remote hosts haven't been created yet.
 - name: Playbook for deploying swift
-  hosts: swift_all
+  hosts: "{{ swift_groups | default('swift_all:swift_remote_all') }}"
   user: root
   gather_facts: true
   pre_tasks:
@@ -26,5 +28,3 @@
         - hostvars[inventory_hostname]['container_networks']['replication_address']['address'] is defined
   roles:
     - role: "{{ rolename | basename }}"
-  vars_files:
-    - test-vars.yml

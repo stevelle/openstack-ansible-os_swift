@@ -20,5 +20,3 @@
   roles:
     - role: "memcached_server"
     - role: "galera_server"
-  vars_files:
-    - test-vars.yml

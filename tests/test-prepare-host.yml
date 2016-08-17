@@ -37,17 +37,34 @@
           - { src: '/etc/pip.conf', dest: '/etc/pip.conf' }
       when: nodepool.stat.exists | bool
   post_tasks:
-    - name: Create br-storage bridge
-      shell: /sbin/brctl addbr br-storage || true
-    - name: IP br-storage
-      command: /sbin/ifconfig br-storage 10.100.101.1 netmask 255.255.255.0
-    - name: Create br-repl bridge
-      shell: /sbin/brctl addbr br-repl || true
-    - name: IP br-repl
-      command: /sbin/ifconfig br-repl 10.100.102.1 netmask 255.255.255.0
+    - name: Ensure that /etc/network/interfaces.d/ exists
+      file:
+        path: /etc/network/interfaces.d/
+        state: directory
+    - name: Copy network configuration
+      template:
+        src: "{{ interfaces_file }}"
+        dest: /etc/network/interfaces.d/swift_interfaces.cfg
+      register: swift_interfaces
+
+    - name: Ensure our interfaces.d configuration files are loaded automatically
+      lineinfile:
+        dest: /etc/network/interfaces
+        line: "source /etc/network/interfaces.d/*.cfg"
+
+    - name: Shut down the network interfaces
+      command: "ifdown {{ item }}"
+      when: swift_interfaces | changed
+      with_items:
+        - "{{ bridges }}"
+
+    - name: Start the network interfaces
+      command: "ifup {{ item }}"
+      when: swift_interfaces | changed
+      with_items:
+        - "{{ bridges }}"
+
     - name: Add iptables rule to ensure ssh checksum is correct
       command: /sbin/iptables -A POSTROUTING -t mangle -p tcp --dport 22 -j CHECKSUM --checksum-fill
   roles:
     - role: "lxc_hosts"
-  vars_files:
-    - test-vars.yml

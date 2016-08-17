@@ -1,0 +1,36 @@
+## The default networking requires several bridges. These bridges were named to be informative
+## however they can be named what ever you like and is adaptable to any network infrastructure
+## environment. This file serves as an example of how to setup basic networking and was ONLY
+## built for the purpose of being an example and used expressly in the building of an ALL IN
+## ONE development environment.
+
+auto br-mgmt
+iface br-mgmt inet static
+    bridge_stp off
+    bridge_waitport 0
+    bridge_fd 0
+    # Notice the bridge port is the vlan tagged interface
+    bridge_ports none
+    address 10.1.1.1
+    netmask 255.255.255.0
+    offload-sg off
+
+auto br-storage
+iface br-storage inet static
+    bridge_stp off
+    bridge_waitport 0
+    bridge_fd 0
+    bridge_ports none
+    address 10.1.2.1
+    netmask 255.255.255.0
+    offload-sg off
+
+auto br-repl
+iface br-repl inet static
+    bridge_stp off
+    bridge_waitport 0
+    bridge_fd 0
+    bridge_ports none
+    address 10.1.3.1
+    netmask 255.255.255.0
+    offload-sg off

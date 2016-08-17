@@ -48,5 +48,3 @@
         - mysql-db-setup
   roles:
     - role: os_keystone
-  vars_files:
-    - test-vars.yml

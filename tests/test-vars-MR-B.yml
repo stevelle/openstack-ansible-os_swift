@@ -31,6 +31,8 @@ galera_root_password: secrete
 galera_root_user: root
 galera_server_id: "{{ inventory_hostname | string_2_int }}"
 galera_wsrep_node_name: "{{ inventory_hostname }}"
+galera_innodb_buffer_pool_size: 512M
+galera_innodb_log_buffer_size: 32M
 galera_wsrep_provider_options:
   - { option: "gcache.size", value: "32M" }
 galera_server_id: "{{ inventory_hostname | string_2_int }}"
@@ -41,11 +43,14 @@ memcached_servers: "{{ hostvars[groups['memcached_all'][0]]['ansible_ssh_host'] 
 memcached_encryption_key: "secrete"
 
 # Network interface settings
-interfaces_file: "test-swift-interfaces.cfg.j2"
+interfaces_file: "test-swift-MR-interfaces.cfg.j2"
 bridges:
-  - br-mgmt
-  - br-storage
-  - br-repl
+  - br-mgmtA
+  - br-storageA
+  - br-replA
+  - br-mgmtB
+  - br-storageB
+  - br-replB
 
 # Keystone Settings
 keystone_messaging_enabled: false
@@ -67,6 +72,16 @@ keystone_developer_mode: true
 keystone_git_install_branch: master
 keystone_requirements_git_install_branch: master
 keystone_service_region: RegionOne
+keystone_httpd_mpm_thread_limit: 20
+keystone_httpd_mpm_min_spare_threads: 2
+keystone_httpd_mpm_max_spare_threads: 10
+
+# Optimization for MR Swift memory usage
+keystone_wsgi_processes: 2
+swift_account_server_workers: 2
+swift_container_server_workers: 2
+swift_object_server_workers: 2
+swift_proxy_server_workers: 2
 
 # Swift specific settings
 swift_storage_address: "{{ ansible_ssh_host }}"
@@ -87,6 +102,7 @@ swift:
   storage_network: eth1
   replication_network: eth3
   part_power: 8
+  region: 2
   drives:
     - name: swift1
     - name: swift2

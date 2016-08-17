@@ -115,5 +115,3 @@
     args:
       chdir: "/opt/swift/"
       executable: "/bin/bash"
-  vars_files:
-    - test-vars.yml

@@ -33,6 +33,3 @@
 
 # Install Swift
 - include: test-install-swift.yml
-
-# Test Swift
-- include: test-swift-functional.yml

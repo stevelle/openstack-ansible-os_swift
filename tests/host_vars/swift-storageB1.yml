@@ -13,18 +13,31 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ansible_ssh_host: 10.1.1.102
-storage_address: 10.1.2.102
+ansible_ssh_host: 10.1.11.103
+storage_address: 10.1.12.103
+replication_address: 10.1.13.103
 container_networks:
   management_address:
     address: "{{ ansible_ssh_host }}"
-    bridge: "br-mgmt"
+    bridge: "br-mgmtB"
     interface: "eth1"
     netmask: "255.255.255.0"
     type: "veth"
   storage_address:
     address: "{{ storage_address }}"
-    bridge: "br-storage"
+    bridge: "br-storageB"
     interface: "eth2"
     netmask: "255.255.255.0"
     type: "veth"
+    static_routes:
+      - cidr: "10.1.2.0/24"
+        gateway: "10.1.12.1"
+  replication_address:
+    address: "{{ replication_address }}"
+    bridge: "br-replB"
+    interface: "eth3"
+    netmask: "255.255.255.0"
+    type: "veth"
+    static_routes:
+      - cidr: "10.1.3.0/24"
+        gateway: "10.1.13.1"
