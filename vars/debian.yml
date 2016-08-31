@@ -15,7 +15,7 @@
 
 cache_timeout: 600
 
-swift_apt_packages:
+swift_distro_packages:
   - curl
   - gcc
   - git-core
