@@ -151,6 +151,14 @@ swift_object_disable_fallocate: "{{ swift_disable_fallocate }}"
 ## Swift ceilometer variables
 swift_reselleradmin_role: ResellerAdmin
 
+# Swift ceilometer rabbitmq settings
+swift_rabbitmq_telemetry_userid: "swift"
+swift_rabbitmq_telemetry_vhost: "/swift"
+swift_rabbitmq_telemetry_port: "5672"
+swift_rabbitmq_telemetry_servers: "127.0.0.1"
+# For now swift ceilometer does not work with SSL - this is a speculative option in the hope it gets added
+swift_rabbitmq_telemetry_use_ssl: "False"
+
 swift_account_server_program_config_options: /etc/swift/account-server/account-server.conf
 swift_account_replicator_program_config_options: /etc/swift/account-server/account-server-replicator.conf
 
