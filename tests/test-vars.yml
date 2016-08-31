@@ -80,7 +80,7 @@ swift_service_internaluri: "http://10.100.100.102:8080"
 swift_replication_address: "{{ replication_address }}"
 swift:
   storage_network: eth1
-  repl_network: eth3
+  replication_network: eth3
   part_power: 8
   drives:
     - name: swift1
