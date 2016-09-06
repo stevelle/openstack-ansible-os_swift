@@ -168,3 +168,24 @@
   until: add_service|success
   retries: 5
   delay: 10
+
+- name: Get Gnocchi project id
+  keystone:
+    command: get_project
+    tenant_name: "{{ gnocchi_service_project_name }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    login_user: "{{ keystone_admin_user_name }}"
+    login_password: "{{ keystone_auth_admin_password }}"
+    login_project_name: "{{ keystone_admin_tenant_name }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
+  register: get_gnocchi_project
+  when:
+    - swift_gnocchi_enabled | bool
+    - swift_gnocchi_service_project_id is not defined
+
+- name: Store Gnocchi project id
+  set_fact:
+    swift_gnocchi_service_project_id: "{{ get_gnocchi_project.id }}"
+  when:
+    - swift_gnocchi_enabled | bool
+    - get_gnocchi_project | success
